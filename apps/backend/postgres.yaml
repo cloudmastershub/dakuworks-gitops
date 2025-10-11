@@ -72,6 +72,29 @@ spec:
     tier: database
 ---
 apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: postgres-pv-dakuworks
+  labels:
+    app: postgres
+    namespace: dakuworks-dev
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: /mnt/data/dakuworks/postgres
+    type: DirectoryOrCreate
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: Exists
+---
+apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: postgres-pvc
@@ -82,3 +105,7 @@ spec:
   resources:
     requests:
       storage: 10Gi
+  selector:
+    matchLabels:
+      app: postgres
+      namespace: dakuworks-dev
