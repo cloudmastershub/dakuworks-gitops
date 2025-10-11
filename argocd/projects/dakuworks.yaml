@@ -1,0 +1,40 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: dakuworks
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: dakuworks
+spec:
+  description: DakuWorks Truck-Moving Application
+
+  # Allow manifests to deploy to dakuworks-dev namespace
+  destinations:
+  - namespace: dakuworks-dev
+    server: https://kubernetes.default.svc
+
+  # Source repositories
+  sourceRepos:
+  - '*'  # Allow all repositories (update with your specific repo URL)
+
+  # Cluster resource whitelist
+  clusterResourceWhitelist:
+  - group: ''
+    kind: Namespace
+
+  # Namespace resource whitelist
+  namespaceResourceWhitelist:
+  - group: ''
+    kind: '*'
+  - group: 'apps'
+    kind: '*'
+  - group: 'batch'
+    kind: '*'
+  - group: 'networking.k8s.io'
+    kind: '*'
+  - group: 'autoscaling'
+    kind: '*'
+
+  # Orphaned resources monitoring
+  orphanedResources:
+    warn: true

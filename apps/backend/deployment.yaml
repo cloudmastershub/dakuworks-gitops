@@ -1,0 +1,109 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dakuworks-backend
+  namespace: dakuworks-dev
+  labels:
+    app: dakuworks
+    tier: backend
+    environment: dev
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: dakuworks
+      tier: backend
+  template:
+    metadata:
+      labels:
+        app: dakuworks
+        tier: backend
+        environment: dev
+    spec:
+      containers:
+      - name: backend
+        image: mbuaku/dakuworks-backend:latest
+        ports:
+        - containerPort: 3000
+          protocol: TCP
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: PORT
+          value: "3000"
+        - name: API_VERSION
+          value: "v1"
+        - name: DATABASE_HOST
+          value: "postgres"
+        - name: DATABASE_PORT
+          value: "5432"
+        - name: DATABASE_NAME
+          value: "dakuworks"
+        - name: DATABASE_USER
+          valueFrom:
+            secretKeyRef:
+              name: dakuworks-secrets
+              key: database-user
+        - name: DATABASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: dakuworks-secrets
+              key: database-password
+        - name: REDIS_HOST
+          value: "redis"
+        - name: REDIS_PORT
+          value: "6379"
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: dakuworks-secrets
+              key: jwt-secret
+        - name: EMAIL_HOST
+          value: "smtp.gmail.com"
+        - name: EMAIL_PORT
+          value: "587"
+        - name: EMAIL_USER
+          valueFrom:
+            secretKeyRef:
+              name: dakuworks-secrets
+              key: email-user
+        - name: EMAIL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: dakuworks-secrets
+              key: email-password
+        - name: EMAIL_FROM
+          value: "noreply@dakuworks.com"
+        - name: FRONTEND_URL
+          value: "https://dakuworks.com"
+        - name: CORS_ORIGINS
+          value: "https://dakuworks.com"
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "200m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsNonRoot: true
+          runAsUser: 1001
+          capabilities:
+            drop:
+            - ALL
+      restartPolicy: Always
+      securityContext:
+        fsGroup: 2000

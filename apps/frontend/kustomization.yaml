@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: dakuworks-dev
+
+resources:
+- deployment.yaml
+- service.yaml
+- ingress.yaml
+
+commonLabels:
+  app.kubernetes.io/name: dakuworks-frontend
+  app.kubernetes.io/part-of: dakuworks
+  app.kubernetes.io/managed-by: argocd
