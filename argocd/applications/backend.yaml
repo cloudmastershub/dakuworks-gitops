@@ -11,7 +11,7 @@ metadata:
 spec:
   project: dakuworks
   source:
-    repoURL: https://github.com/YOUR_USERNAME/dakuworks-gitops.git  # UPDATE THIS
+    repoURL: https://github.com/cloudmastershub/dakuworks-gitops.git
     targetRevision: HEAD
     path: apps/backend
   destination:
