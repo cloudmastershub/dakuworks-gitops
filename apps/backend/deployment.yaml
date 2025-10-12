@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: mbuaku/dakuworks-backend:build-3
+        image: mbuaku/dakuworks-backend:build-5
         ports:
         - containerPort: 3000
           protocol: TCP
