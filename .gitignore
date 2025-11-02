@@ -1,0 +1,19 @@
+# Secrets - NEVER commit actual secrets!
+**/secrets.yaml
+**/*-secret.yaml
+**/.env
+**/.env.*
+!**/.env.example
+
+# Temporary files
+*.tmp
+*.swp
+*~
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
