@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: mbuaku/dakuworks-frontend:build-6
+        image: mbuaku/dakuworks-frontend:build-9
         ports:
         - containerPort: 3001
           protocol: TCP
