@@ -79,6 +79,7 @@ metadata:
     app: postgres
     namespace: dakuworks-dev
 spec:
+  storageClassName: ""
   capacity:
     storage: 10Gi
   accessModes:
@@ -100,6 +101,7 @@ metadata:
   name: postgres-pvc
   namespace: dakuworks-dev
 spec:
+  storageClassName: ""
   accessModes:
   - ReadWriteOnce
   resources:
